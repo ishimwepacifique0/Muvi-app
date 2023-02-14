@@ -11,11 +11,33 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TextInput } from 'react-native-paper';
 import { Ionicons,FontAwesome,AntDesign } from '@expo/vector-icons';
+import { useDispatch } from 'react-redux';
+import { signup } from '../../features/authSlice';
+import React from 'react';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 export default function SignupScreen({navigation}){
+
+    const dispatch = useDispatch()
+    const [username,setUsername] = React.useState('')
+    const [password,setPassword] = React.useState('')
+    const [email,setEmail] = React.useState('')
+
+
+
+    const dataRegister = () =>{
+        const data = {
+            username:username,
+            email:email,
+            password:password
+        }
+        console.log(data)
+        dispatch(signup(data))
+    }
+
+
     const highlight = string =>
     string.split(' ').map((word, i) => (
       <Text key={i}>
@@ -65,11 +87,23 @@ export default function SignupScreen({navigation}){
          <View>
             <TextInput 
             mode="outline"
+            right={<TextInput.Icon  name="username"/>}
+            label="Enter username or phonenumber"
+            activeUnderlineColor='#e5a50a'
+            underlineColor='#26282C'
+            style={styles.input}
+            onChangeText={(username)=>{setUsername(username)}}
+            />        
+              </View>
+         <View>
+            <TextInput 
+            mode="outline"
             right={<TextInput.Icon  name="email"/>}
             label="Enter email or phonenumber"
             activeUnderlineColor='#e5a50a'
             underlineColor='#26282C'
             style={styles.input}
+            onChangeText={(email)=>{setEmail(email)}}
             />        
               </View>
               <View>
@@ -80,19 +114,13 @@ export default function SignupScreen({navigation}){
             activeUnderlineColor='#e5a50a'
             underlineColor='#26282C'
             style={styles.input}
+            secureTextEntry={true}
+            onChangeText={(password)=>{setPassword(password)}}
+            
             />      
               </View>
-              <View>
-            <TextInput 
-            mode="outline"
-            label="Confirm password"
-            activeUnderlineColor='#e5a50a'
-            underlineColor='#26282C'
-            style={[styles.input,{color:'black'},]}
-            />        
-              </View>
               <TouchableOpacity>
-              <Pressable style={styles.button} >
+              <Pressable style={styles.button} onPress={dataRegister}>
                 <Text style={{ color:'#000000',fontSize:14,fontWeight:'bold',textAlign:'center'}}>
                     Sign up
                 </Text>

@@ -27,7 +27,7 @@ export default function WelcomeScreen({navigation}){
             setTimeout(() => {
               setShow(false)
               navigation.navigate('app')
-            }, 2000);
+            }, 1000);
             }} >
                <View style={styles.content}>
                <View>

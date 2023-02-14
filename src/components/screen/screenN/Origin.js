@@ -15,7 +15,6 @@ const Origin = () => {
         method:'get',
         url:"https://api.themoviedb.org/3/movie/top_rated?api_key=d9cf23cf23f14a29b69eccb99afeaeff&language=en-US&page=3"
     }).then((data2)=>{
-        console.log(data2.data)
         setTrend(data2.data.results)
     }).catch((err) => {
         console.log(err)
@@ -25,10 +24,9 @@ const Origin = () => {
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       {trend.map((item)=>{
         return(
-          <View style={{backgroundColor:'black',paddingBottom:18,paddingTop:18}}>
+          <View style={{backgroundColor:'black',paddingBottom:18,paddingTop:18}} key={item.id} >
           <View style={{
-            backgroundColor:'#0F1417',
-            width:100,
+            width:110,
             height:188,
             borderRadius:5,
             marginHorizontal:8
@@ -37,28 +35,27 @@ const Origin = () => {
             source={{ 
               uri:`https://image.tmdb.org/t/p/w500${item.poster_path}`,
             }} style={{
-              width:100,
+              width:110,
               height:104,
               padding:20,
               borderRadius:2
             }}/>
-            <Text style={{
+            <Text numberOfLines={2} style={{
               color:'white',
-              fontSize:10,
+              fontSize:12,
               fontWeight:'bold',
               textAlign:'center',
-              margin:5
+              margin:2
     
             }}>
               {item.title}
             </Text>
-            <Text style={{
-               color:'green',
-               fontWeight:'bold',
+            <Text numberOfLines={3} style={{
+               color:'grey',
                margin:5,
-               textAlign:'center'
+               fontSize:10
             }}>
-                {item.release_date}
+                {item.overview}
             </Text>
           </View>
           </View>

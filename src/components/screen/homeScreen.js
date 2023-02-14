@@ -3,7 +3,8 @@ import {
     Text,
     StyleSheet,
     Image,
-    TextInput
+    TextInput,
+    TouchableOpacity
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import TopNavbar from '../navigation/TopNavbar';

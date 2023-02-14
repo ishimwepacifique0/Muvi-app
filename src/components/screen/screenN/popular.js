@@ -46,8 +46,8 @@ const Series = () => {
             }}
             />
             <View style={{marginVertical:4,}}>
-              <Text style={{color:'white',fontSize:15,fontWeight:'bold',marginRight:20}}>{item.title}</Text>
-              <Text style={{color:'green', fontSize:15}}>{item.release_date}</Text>
+              <Text style={{color:'white',fontSize:15,fontWeight:'bold',marginRight:20}} numberOfLines={2}>{item.title}</Text>
+              <Text style={{color:'white', fontSize:15}}>{item.release_date}</Text>
               <Text style={{ color:'white',fontSize:15}} numberOfLines={1}>{item.overview}</Text>
               <MaterialIcons name="hd" size={24} color="#e5a50a" />
             </View>

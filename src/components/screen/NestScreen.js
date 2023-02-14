@@ -38,7 +38,7 @@ export default function NextScreen({navigation}){
                                 setTimeout(() => {
                                     setShow(false)
                                     navigation.navigate('home')
-                                }, 2000);
+                                }, 1000);
                                 }}>
                 <Text style={{ color:'#000000',padding:5,fontSize:18,fontWeight:'bold',textAlign:'center'}}>
                     Watch movie

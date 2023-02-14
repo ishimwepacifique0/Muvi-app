@@ -4,6 +4,7 @@ import { Feather,Ionicons,MaterialCommunityIcons,AntDesign } from "@expo/vector-
 import Series from "../screen/screenN/Series";
 import Firm from "../screen/screenN/Firm";
 import Profile from "../screen/screenN/Feature";
+import TopheaderNavbar from "./topHeaderNavbar";
 
 
 const { Navigator,Screen} = createBottomTabNavigator();
@@ -27,7 +28,7 @@ export default function BottomNavigation(){
         >
             <Screen  
             name="homescreen" 
-            component={HomeScreen}
+            component={TopheaderNavbar}
             options={{
                 tabBarIcon:()=>{
                     return <Feather name="home" size={26} color={'#fff'}/>

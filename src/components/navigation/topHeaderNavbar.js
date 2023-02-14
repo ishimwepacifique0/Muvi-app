@@ -7,6 +7,8 @@ import { Ionicons,FontAwesome } from "@expo/vector-icons";
 import BottomNavigation from "./BottomNavigation";
 import { StatusBar } from "expo-status-bar";
 import HomeScreen from "../screen/homeScreen";
+import { LargeCard } from "../screen/screenN/largeCard";
+import WatchTrailer from "../screen/screenN/WatchTrailer";
 
 
 const width = Dimensions.get('window').width;
@@ -19,7 +21,7 @@ const { Navigator,Screen } = createMaterialTopTabNavigator()
 export default function TopheaderNavbar(){
         return(
           <>                
-      <StatusBar backgroundColor="#222222" animated={true} tabBarStyle={{ }} />
+      <StatusBar style="light"/>
   <View style={{backgroundColor:'#222222',width:width,paddingLeft:10,paddingRight:10,paddingTop:Platform.OS==='android'?20:20}}>
         <View style={{ flexDirection:'row',justifyContent:'space-between'}}>
         <View style={styles.content}>
@@ -69,8 +71,8 @@ export default function TopheaderNavbar(){
                    }
                    
                 }}>
-                    <Screen  name="Feature" component={BottomNavigation}/>
-                    <Screen  name="Series" component={Series}/>
+                    <Screen  name="Feature" component={LargeCard}/>
+                    <Screen  name="Series" component={WatchTrailer}/>
                     <Screen  name="Firm" component={Firm}/>
                     <Screen  name="Origin" component={Origin}/>
                 </Navigator>

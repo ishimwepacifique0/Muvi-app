@@ -1,9 +1,10 @@
-import { View, Text,StyleSheet,Dimensions, ActivityIndicator } from 'react-native'
+import { View, Text,StyleSheet,Dimensions, ActivityIndicator, StatusBar } from 'react-native'
 import React from 'react'
 import { ScrollView,Image } from 'react-native-gesture-handler'
 import Origin from './Origin'
 import axios from 'axios'
 import Series from './popular'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const height = Dimensions.get('window').height;
 
@@ -17,15 +18,16 @@ export default function Firm(){
   const ownload = ()=>{
       axios({
         method:'get',
-        url:'https://api.themoviedb.org/3/movie/top_rated?api_key=d9cf23cf23f14a29b69eccb99afeaeff&language=en-US&page=1'
+        url:'https://api.themoviedb.org/3/movie/top_rated?api_key=d9cf23cf23f14a29b69eccb99afeaeff&language=en-US&page=3'
       }).then((data1)=>{
-        console.log(data1.data.results)
+
         setDownload(data1.data.results);
       }).catch((err)=>{
           console.log(err)
       })
   }
   return(
+    <SafeAreaView>
     <View style={styles.container}>
       <Text style={{color:'white',fontSize:20,marginVertical:12,marginHorizontal:10,fontWeight:'bold'}}>
           My list
@@ -47,6 +49,8 @@ export default function Firm(){
         </ScrollView>
        
     </View>
+    <StatusBar  style="light" />
+    </SafeAreaView>
   )
 }
 

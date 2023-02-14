@@ -51,7 +51,7 @@ export default function AppScreen({navigation}){
                 setTimeout(() => {
                     setShow(false)
                     navigation.navigate('next')
-                }, 2000);
+                }, 1000);
                 }}>
                 <Text style={{ color:'#000000',padding:5,fontSize:18,fontWeight:'bold',textAlign:'center'}}>
                     Get started

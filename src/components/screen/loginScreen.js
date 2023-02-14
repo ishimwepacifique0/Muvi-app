@@ -10,12 +10,30 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TextInput } from 'react-native-paper';
-import { Ionicons,FontAwesome,AntDesign } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../../features/authSlice';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 export default function SigninScreen({navigation}){
+    const Dispatch = useDispatch()
+    const [email,setEmail] = React.useState('')
+    const [password,setPassword] = React.useState('')
+
+
+    const getCredential = () =>{
+        const data = {
+            email:email,
+            password:password
+        }
+        console.log(data)
+         Dispatch(signIn(data))
+    }
+
+
     const highlight = string =>
     string.split(' ').map((word, i) => (
       <Text key={i}>
@@ -71,6 +89,7 @@ export default function SigninScreen({navigation}){
             activeUnderlineColor='#e5a50a'
             underlineColor='#26282C'
             style={styles.input}
+            onChangeText = {(email) =>{setEmail(email)}}
             />        
               </View>
               <View>
@@ -81,15 +100,17 @@ export default function SigninScreen({navigation}){
             activeUnderlineColor='#e5a50a'
             underlineColor='#26282C'
             style={styles.input}
+            onChangeText = {(password)=>{setPassword(password)}}
+            secureTextEntry={true}
             />      
               </View>
               <Text style={{alignSelf:'flex-end'}}>
                 {highlight('Forget Password')}
               </Text>
               <TouchableOpacity>
-              <Pressable style={styles.button} >
+              <Pressable style={styles.button} onPress={getCredential} >
                 <Text style={{padding:8, color:'#000000',fontSize:14,fontWeight:'bold',textAlign:'center'}}>
-                    Get started
+                    Login
                 </Text>
               </Pressable>
               </TouchableOpacity>

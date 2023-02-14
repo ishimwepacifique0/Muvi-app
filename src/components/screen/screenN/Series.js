@@ -10,17 +10,23 @@ const width = Dimensions.get('window').width;
 
 const Series = () => {
  const [search,setSearch] = useState([])
+ const [searchdata,setSearchdata] = useState('')
 
  React.useEffect(() => {
-   Searchapi()
- }, [])
+  if (searchdata.length > 0){
+    Searchapi()
+  }else{
+    setSearch([])
+  }
+   
+ }, [searchdata])
 
  const Searchapi = () =>{
   axios({
     method:'get',
-    url:'https://api.themoviedb.org/3/movie/upcoming?api_key=d9cf23cf23f14a29b69eccb99afeaeff&language=en-US&page=1'
-   }).then((data)=>{
-    setSearch(data.data.results)
+    url:`https://api.themoviedb.org/3/search/movie?api_key=d9cf23cf23f14a29b69eccb99afeaeff&language=en-US&query=${searchdata}&page=1&include_adult=false`
+   }).then((data1)=>{
+    setSearch(data1.data.results)
    }).catch((err)=>{
     console.log(err)
    })
@@ -38,16 +44,20 @@ const Series = () => {
           placeholder='Search......'
           activeUnderlineColor={'#25262A'}
           style={styles.textinput}
-
+          onChangeText={(text)=>{setSearchdata(text)}}
           placeholderTextColor={'white'}
           />
-        <Feather name="search" size={24} color="yellow" style={styles.buttonsearch}/>
+        <Feather 
+        name="search" 
+        size={24} color="yellow"
+         style={styles.buttonsearch}
+         />
         </View>
         <View>
           <Text style={{color:'white',fontSize:16,marginHorizontal:10,fontWeight:'bold'}}>Popular movies</Text>
         </View>
         <ScrollView>
-        { search.map((item,key)=>{
+        {search.map((item,key)=>{
           return(
             <View style={{flexDirection:'row',marginVertical:6}} key={item.id}>
             <Image 
@@ -64,7 +74,7 @@ const Series = () => {
             />
             <View style={{marginVertical:4,}}>
               <Text style={{color:'white',fontSize:15,fontWeight:'bold',marginRight:20}}>{item.title}</Text>
-              <Text style={{color:'green', fontSize:15}}>{item.release_date}</Text>
+              <Text style={{color:'white', fontSize:15,fontWeight:'bold'}}>{item.release_date}</Text>
               <Text style={{ color:'white',fontSize:15}} numberOfLines={1}>{item.overview}</Text>
               <Text style={{ color:'white',fontSize:15}} numberOfLines={1}>{item.popularity}</Text>
             </View>
