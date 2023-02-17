@@ -1,4 +1,4 @@
-import { Ionicons, AntDesign,Octicons,Entypo } from '@expo/vector-icons';
+import { Ionicons, AntDesign,Octicons,Entypo,FontAwesome5 } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react'
 import {
@@ -8,25 +8,42 @@ import {
     Dimensions,
     ImageBackground,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    Linking
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import WatchTrailer from './WatchTrailer';
+import YoutubeIframe from 'react-native-youtube-iframe';
+import axios from 'axios';
+import { ActivityIndicator } from 'react-native';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
 const Detail = ({ route }) => {
     const [detail, SetDetail] = React.useState({});
-    console.log(route.params)
-
+    const [playing,setPlaying] = React.useState(null)
+    const [playbutton, setPlayingbutton] = React.useState(false)
+    console.log(playing)
+    let message = ""
+    if (playing != null) message = `https://www.youtube.com/watch?v=${playing?.results[0]?.key}`
+          
     React.useEffect(() => {
         SetDetail(route.params)
-    }, [])
-    console.log(detail)
+        showTrail()
+    }, [detail])
+
+    const showTrail = async () =>{
+       let {data} = await axios.get(`https://api.themoviedb.org/3/movie/${detail?.id}/videos?api_key=d9cf23cf23f14a29b69eccb99afeaeff&language=en-US`
+        ) 
+        setPlaying(data)
+        console.log(data)
+    }
+    // console.log(playing.results[0].key)
     return (
         <>
             <StatusBar style='light' />
+
             <View key={detail.id}>
                 <ImageBackground
                     resizeMode='cover'
@@ -42,13 +59,35 @@ const Detail = ({ route }) => {
                         style={{
                             backgroundColor: '#222222',
                             height: 60,
-                            opacity: 0.2
+                            opacity: 0.2,
+                            flexDirection:'row',
+                            justifyContent:'space-between'
                         }}>
                         <AntDesign name="arrowleft" size={24} color="white" style={{
                             marginTop: 30,
                             marginHorizontal: 4,
-                        }} />
-                    </View>
+                        }} 
+                         onPress={()=>{
+                            setPlayingbutton(true)
+                         }}
+                         />
+
+                        </View>
+                
+                    {!playing? (
+                    <ActivityIndicator size='large' color={'white'} />
+                ):(
+                    
+                    <YoutubeIframe 
+                    height={340}
+                    widtht={200}
+                    resizeMode = "contain"
+                    play={true}
+                    videoId={playing?.results[0]?.key}
+                    onChangeState={(event)=>console.log(event)}
+                    />
+                )
+            }
 
                     <TouchableOpacity>
                         <AntDesign name="playcircleo" size={38} color="yellow"
@@ -81,7 +120,11 @@ const Detail = ({ route }) => {
                             <Text numberOfLines={2} style={{color:'silver',fontSize:16,fontWeight:'bold'}}>{detail.title}</Text>
                         </View>
                         <View>
-                        <Octicons name="bookmark" size={20} color="white" />
+                        <FontAwesome5 name="whatsapp" size={24} color="green"
+                        onPress={()=>{
+                                Linking.openURL(`whatsapp://send?text=${message}`)
+                           }}
+                        />
                         </View>
                     </View>
                     <View style={{flexDirection:'row'}}>
@@ -96,13 +139,21 @@ const Detail = ({ route }) => {
                         </View>
 
                     </View>
-                    <View style={{ flexDirection:'row',marginHorizontal:5}}>
-                    <Entypo name="star" size={16} color="yellow" />
+                    <View style={{ flexDirection:'row',justifyContent:'space-between',marginHorizontal:5}}>
+                    
                     <View>
+                        <Entypo name="star" size={16} color="yellow" />
                         <Text style={{color:'white',fontWeight:'bold',marginHorizontal:3}}>
                             {detail.vote_average}
                         </Text>
                     </View>
+                    <View>
+                        <FontAwesome5 name="sms" size={24} color="blue"
+                        onPress={()=>{
+                            Linking.openURL(`sms:number=0788817236&body=${message}`)
+                        }}
+                        />
+                        </View>
                     </View>
                     <View style={{
                         backgroundColor:'silver',height:1,width:347,marginLeft:7,marginTop:8,borderRadius:4

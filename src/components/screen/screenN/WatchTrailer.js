@@ -5,8 +5,11 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    ScrollView
+    ScrollView,
+    Dimensions
 } from 'react-native'
+
+const height = Dimensions.get('screen').height
 
 const WatchTrailer = ({navigation}) =>{
 
@@ -18,7 +21,7 @@ const WatchTrailer = ({navigation}) =>{
     const getWatch = () =>{
         axios({
             method:'get',
-            url:'https://api.themoviedb.org/3/movie/now_playing?api_key=d9cf23cf23f14a29b69eccb99afeaeff&language=en-US&page=4',
+            url:'https://api.themoviedb.org/3/movie/now_playing?api_key=d9cf23cf23f14a29b69eccb99afeaeff&language=en-US&page=2',
         }).then((dat)=>{
             setWatch(dat.data.results)
         }).catch((err)=>{
@@ -27,7 +30,8 @@ const WatchTrailer = ({navigation}) =>{
     }
     return(
         <ScrollView>
-        <View>
+        <View style={{backgroundColor:'#26282C',
+      height:height,}}>
             {watch.map((item)=>{
                     return(
                         <>

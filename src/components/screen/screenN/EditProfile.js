@@ -4,6 +4,7 @@ import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import { UserEdit } from '../../../features/authSlice';
+import FlashMessage,{showMessage} from 'react-native-flash-message'; 
 
 
 const height = Dimensions.get('screen').height;
@@ -27,12 +28,52 @@ const EditProfile = ({route}) => {
             password:password,
             username:username,  
         }
+        if( data.email == ''&& data.username == '' && data.password == ''){
+          return(
+            showMessage(
+              {
+                message:"Error",
+                description:"all fields are required",
+                type:"danger"
+              }
+            )
+          )
+        }else if( data.email ==""){
+          return(
+            showMessage(
+              {
+                message:"Error",
+                description:"Email field are required",
+                type:"warning"
+              }
+            )
+          )
+        }else if(data.username == ''){
+          return(
+            showMessage(
+              {
+                message:"Error",
+                description:"Username field are required",
+                type:"warning"
+              }
+            )
+          )
+        }else if(data.password == ''){
+          showMessage(
+            {
+              message:"Error",
+              description:"Password field are required",
+              type:"warning"
+            }
+          )
+        }
         console.log(data)
         Dispatch(UserEdit(data))
     }
 
   return (
     <SafeAreaView style={{ backgroundColor: '#0F1417' }}>
+      <FlashMessage />
     <View style={StyleSheet.container}>
         <ScrollView>
       <View style={{

@@ -17,7 +17,6 @@ const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 export default function AppScreen({navigation}){
-    const [show,setShow] = React.useState(false)
     return(
         <SafeAreaView>
           <ImageBackground source={image} resizeMode="cover" style={styles.image} imageStyle={{opacity:0.28}}>
@@ -26,7 +25,6 @@ export default function AppScreen({navigation}){
             flex:1,
             justifyContent:'center'
         }}>
-         <ActivityIndicator size={'large'} color={'white'} animating={show}/>
         <View style={{ marginTop:60}}>
         <Text style={styles.h1}>Enjoy your favourite</Text>
         <Text style={styles.h1}>Movie everywhere</Text>
@@ -47,11 +45,7 @@ export default function AppScreen({navigation}){
             <View style={{marginBottom:30}}>
         <TouchableOpacity>
               <Pressable style={styles.button} onPress={()=>{
-                setShow(true)
-                setTimeout(() => {
-                    setShow(false)
                     navigation.navigate('next')
-                }, 1000);
                 }}>
                 <Text style={{ color:'#000000',padding:5,fontSize:18,fontWeight:'bold',textAlign:'center'}}>
                     Get started

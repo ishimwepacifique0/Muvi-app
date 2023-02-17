@@ -5,7 +5,8 @@ import {
     StyleSheet,
     Dimensions,
     Pressable,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator
 
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -14,24 +15,68 @@ import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { signIn } from '../../features/authSlice';
+import FlashMessage,{showMessage } from 'react-native-flash-message';
+import { useSelector } from 'react-redux';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 export default function SigninScreen({navigation}){
+
+  const displayError = useSelector((state)=> state.authactor.error)
+  const displaySuccess = useSelector((state)=>state.authactor.isLoggedin)
+
     const Dispatch = useDispatch()
     const [email,setEmail] = React.useState('')
     const [password,setPassword] = React.useState('')
+    const [animation,setAnimation] = React.useState(false)
 
 
+     console.log(displayError)
     const getCredential = () =>{
+        
         const data = {
             email:email,
             password:password
         }
+        if(data.email == "" && data.password == ""){
+            return(
+                showMessage({
+                    message: "Empty field",
+                    description: "All field are required",
+                    type: "danger",
+                  })
+                      
+            )
+        }else if(data.email == ""){
+            return(
+                showMessage({
+                    message: "Empty email",
+                    description: "Email are required",
+                    type: "warning",
+                  })  
+            )
+        }else if(data.password == ""){
+            return(
+                showMessage({
+                    message: "Empty password",
+                    description: "Password are required",
+                    type: "warning",
+                  })
+            )}
+        else if(displayError){
+            showMessage({
+                message:'Error',
+                description:displayError,
+                type:'danger'
+        
+            })}
         console.log(data)
-         Dispatch(signIn(data))
+        Dispatch(signIn(data))
+         
     }
+
+
 
 
     const highlight = string =>
@@ -44,6 +89,7 @@ export default function SigninScreen({navigation}){
 
     return(
         <SafeAreaView>
+            <FlashMessage />
             <View style={[styles.container,{height:height,width:width}]}>
             <View style={styles.content}>
                 <View>
@@ -81,6 +127,7 @@ export default function SigninScreen({navigation}){
                 won't let you go
             </Text>
          </View>
+         
          <View>
             <TextInput 
             mode="outline"
@@ -104,6 +151,7 @@ export default function SigninScreen({navigation}){
             secureTextEntry={true}
             />      
               </View>
+              {displaySuccess?(<ActivityIndicator size={'large'}  />):null}
               <Text style={{alignSelf:'flex-end'}}>
                 {highlight('Forget Password')}
               </Text>
@@ -158,6 +206,7 @@ const styles = StyleSheet.create({
     },
     input:{
      backgroundColor:'#26282C',
+      borderColor:'white',
       color:'#ffffff',
       borderWidth:0.5,
       marginLeft:10,

@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import {deleteItemAsync, setItemAsync } from "expo-secure-store";
+import {deleteItemAsync, getItemAsync, setItemAsync } from "expo-secure-store";
 
 
 const initialState = {
     data:[],
     isLoggedin:false,
-    token:''
+    token:'',
+    error: "",
+    successmsg:''
 }
 
  export const authenticationSlice = createSlice({
@@ -21,7 +23,7 @@ const initialState = {
         state.data = action.payload
         state.isLoggedin = true
     },
-    storeToken:(state, action)=>{
+    store:(state, action)=>{
         state.data = action.payload
     },
     logout:(state)=>{
@@ -31,12 +33,20 @@ const initialState = {
     edit:(state,action)=>{
         state.isLoggedin = true,
         state.data = action.payload
+    },
+    err:(state,action)=>{
+        state.error = action.payload
+        state.isLoggedin = false
+    },
+    success:(state,action)=>{
+        state.successmsg = action.payload
+        state.isLoggedin = true
     }
 
 }
 })
 
-export const {signin,signUp,logout,edit } = authenticationSlice.actions
+export const {signin,signUp,logout,edit,store,err,success } = authenticationSlice.actions
 export default authenticationSlice.reducer  
 
 export const signIn = (data) => async (dispatch)=>{
@@ -47,15 +57,15 @@ export const signIn = (data) => async (dispatch)=>{
             url:'https://blog-j7dj.onrender.com/user/login',
             data:data
          });
-         console.log(response.data, "response data")
+         console.log(response.data)
          dispatch(signin(response.data))
          setItemAsync("userdata",JSON.stringify(response.data))
-         dispatch(storeToken(response.data.token))
+         dispatch(store(response.data.token))
          setItemAsync("userToken",JSON.stringify(response.data.token))
 
     } catch (error) {
-        console.log(error)
-        
+        dispatch(err(error.response.data.message))
+
     }
 }
 
@@ -69,10 +79,13 @@ export const signup = (data) => async (dispatch)=>{
          });
          console.log(response.data)
          dispatch(signUp(response.data))
-         setItemAsync("usedata",JSON.stringify(response.data))
+         setItemAsync("userdata",JSON.stringify(response.data))
+         dispatch(store(response.data.token))
+         setItemAsync("userToken",JSON.stringify(response.data.insertedUser.token))
 
     } catch (error) {
-        console.log(error)
+        console.log(error.response.data.message)
+        dispatch(err(error.response.data.message))
         
     }
 }
@@ -91,9 +104,11 @@ export const UserEdit = (data) => async (dispatch)=>{
     })
     console.log(response.data)
     dispatch(edit(response.data))
-    setItemAsync("usedata",JSON.stringify(response.data))
+    setItemAsync("userdata",JSON.stringify(response.data))
+    dispatch(success(response.data.message))
     }catch(error){
-        console.log(error)
+        console.log(error.response.data.message)
+        dispatch(err(error.response.data.message))
     }
 }
 export const Deleteuser = (data) => async (dispatch) =>{
@@ -107,5 +122,7 @@ export const Deleteuser = (data) => async (dispatch) =>{
 
     }catch(err){
         console.log(err)
+        console.log(error.response.data.message)
+        dispatch(err(error.response.data.message))
     }
 }

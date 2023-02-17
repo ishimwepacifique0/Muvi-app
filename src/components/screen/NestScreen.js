@@ -30,7 +30,7 @@ export default function NextScreen({navigation}){
             <View style={styles.circle3}></View>
 
            </View>
-           <ActivityIndicator size={'large'} color={'white'}  animating={show}/>
+           <ActivityIndicator size={'large'} color={'#e5a50a'}  animating={show}/>
            <View style={{marginTop:30}}>
         <TouchableOpacity>
                             <Pressable style={styles.button} onPress={()=>{

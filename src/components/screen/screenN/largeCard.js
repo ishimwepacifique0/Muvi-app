@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text, View,ScrollView,Dimensions, Pressable, TouchableOpacity } from 'react-native'
+import { ImageBackground, StyleSheet, Text, View,ScrollView,Dimensions, Pressable, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React ,{ useEffect}from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import axios from 'axios'
@@ -218,6 +218,7 @@ const height = Dimensions.get('window').height;
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginBottom:200}} >
         {movieTrend.map((item) => {
             return(
+                <TouchableOpacity onPress={()=>{navigation.navigate('detail',item)}}>
                 <ImageBackground
                 key={item.id}
                 source={{
@@ -259,11 +260,13 @@ const height = Dimensions.get('window').height;
                        </Text>
        
                </ImageBackground>
+               </TouchableOpacity>
                
             )
          })
         }
         </ScrollView>
+        <ActivityIndicator size={'large'}  />
         </ScrollView>
         </View>
   )

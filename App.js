@@ -14,10 +14,9 @@ import Profile from './src/components/screen/screenN/Feature'
 const App = () => {
   return (
     <Provider store={Store}>
-   <NavigationContainer>
+    <NavigationContainer>
     <RouterNavigation />
    </NavigationContainer>
-   {/* <Profile /> */}
    </Provider>
   )
 }

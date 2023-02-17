@@ -1,31 +1,45 @@
-import { View, Text, StyleSheet, Image, StatusBar, Dimensions, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Image, StatusBar, Dimensions, Pressable,Linking } from 'react-native'
 import React from 'react'
 import { Octicons, Feather, MaterialIcons, AntDesign, Entypo } from '@expo/vector-icons';
 import { Deleteuser, signout } from '../../../features/authSlice'
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { getItemAsync } from 'expo-secure-store';
+import axios from 'axios';
 
 
 const height = Dimensions.get('screen').height;
 const Profile = ({navigation}) => {
-  const [userData, setUserData] = React.useState({})
+  const [userDataone, setUserData] = React.useState({})
+  const [userData,setGetoneuser] = React.useState({})
 
   React.useEffect(() => {
+    // SingleUser()
     Getdatafromstorage()
+    
   }, [])
 
+  // const SingleUser = () =>{
+  //   axios({
+  //     method:'get',
+  //     url:`https://blog-j7dj.onrender.com/user/${userData._id}`
+  //   }).then((res)=>{
+  //     setGetoneuser(res.data)
+  //   })
+  // }
+
+
   const Getdatafromstorage = () => {
-    getItemAsync("usedata").then((data) => {
+    getItemAsync("userdata").then((data) => {
        const datacon =  JSON.parse(data)
-      setUserData(datacon.insertedUser)
+      setUserData(datacon.userData)
       
     }).catch(erro => console.log(erro))
   }
 
   const deleteacccount = () =>{
     const data = {
-      _id:userData._id
+      _id:userDataone._id
     }
     console.log(data)
     dispatch(Deleteuser(data))
@@ -35,6 +49,7 @@ const Profile = ({navigation}) => {
 
 
   return (
+    <>
     <View style={StyleSheet.container}>
       <View style={{
         backgroundColor: '#012',
@@ -52,10 +67,10 @@ const Profile = ({navigation}) => {
           }}
         />
         <View>
-          <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }}>{userData.username}</Text>
-          <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }}>{userData.email}</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }}>{userDataone.username}</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold', alignSelf: 'center' }}>{userDataone.email}</Text>
           <Text style={{ color: '#e5a50a', fontWeight: 'bold', alignSelf: 'center' }}
-          onPress={()=>(navigation.navigate('edit',userData))}
+          onPress={()=>(navigation.navigate('edit',userDataone))}
           >Edit Profile</Text>
 
         </View>
@@ -64,7 +79,11 @@ const Profile = ({navigation}) => {
         <View style={styles.label}>
           <Octicons name="inbox" size={20} color="white" />
           <View>
-            <Text style={{ color: 'white', marginLeft: 10, fontSize: 18 }}>
+            <Text style={{ color: 'white', marginLeft: 10, fontSize: 18 }} onPress={()=>{
+                Linking.openURL(
+                  'mailto:contato@google.com'
+                );
+            }} >
               Inbox
             </Text>
           </View>
@@ -113,6 +132,7 @@ const Profile = ({navigation}) => {
 
       <StatusBar style={{ backgroundColor: '#0F1417' }} />
     </View>
+    </>
 
   )
 }

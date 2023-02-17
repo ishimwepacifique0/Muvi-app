@@ -3,8 +3,10 @@ import React,{useEffect, useState} from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import axios from 'axios'
 
+
 const Origin = () => {
   const [trend,setTrend] = useState([])
+  const [animation,setAnimation] = useState(true)
 
   useEffect(()=>{
     Trend()

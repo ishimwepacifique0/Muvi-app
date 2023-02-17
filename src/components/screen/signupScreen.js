@@ -14,6 +14,8 @@ import { Ionicons,FontAwesome,AntDesign } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { signup } from '../../features/authSlice';
 import React from 'react';
+import FlashMessage,{showMessage } from 'react-native-flash-message';
+import { useSelector } from 'react-redux';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -24,8 +26,12 @@ export default function SignupScreen({navigation}){
     const [username,setUsername] = React.useState('')
     const [password,setPassword] = React.useState('')
     const [email,setEmail] = React.useState('')
+    const [animation,setAnimation] = React.useState(false)
+
+    const flashmsg = React.useRef()
 
 
+    console.log("hello")
 
     const dataRegister = () =>{
         const data = {
@@ -33,8 +39,43 @@ export default function SignupScreen({navigation}){
             email:email,
             password:password
         }
+        if(data.username == "" && data.email == "" && data.password == ""){
+            return(
+                flashmsg.current.showMessage({
+                    message: "Empty field",
+                    description: "All field are required",
+                    type: "danger",
+                  })
+            )
+        }else if(data.username == ""){
+            return(
+                flashmsg.current.showMessage({
+                    message: "Empty username",
+                    description: "Username are required",
+                    type: "warning",
+                  })
+            )
+        }else if(data.email == ""){
+            return(
+                flashmsg.current.showMessage({
+                    message: "Empty email",
+                    description: "Email are required",
+                    type: "warning",
+                  })
+            )
+        }else if(data.password == ""){
+            return(
+                flashmsg.current.showMessage({
+                    message: "Empty password",
+                    description: "Password are required",
+                    type: "warning",
+                  })
+            )
+        }
+
         console.log(data)
         dispatch(signup(data))
+
     }
 
 
@@ -91,7 +132,7 @@ export default function SignupScreen({navigation}){
             label="Enter username or phonenumber"
             activeUnderlineColor='#e5a50a'
             underlineColor='#26282C'
-            style={styles.input}
+            style={[styles.input]}
             onChangeText={(username)=>{setUsername(username)}}
             />        
               </View>
@@ -102,7 +143,7 @@ export default function SignupScreen({navigation}){
             label="Enter email or phonenumber"
             activeUnderlineColor='#e5a50a'
             underlineColor='#26282C'
-            style={styles.input}
+            style={[styles.input]}
             onChangeText={(email)=>{setEmail(email)}}
             />        
               </View>
@@ -113,8 +154,7 @@ export default function SignupScreen({navigation}){
             label="Password"
             activeUnderlineColor='#e5a50a'
             underlineColor='#26282C'
-            style={styles.input}
-            secureTextEntry={true}
+            style={[styles.input]}
             onChangeText={(password)=>{setPassword(password)}}
             
             />      
@@ -148,8 +188,9 @@ export default function SignupScreen({navigation}){
                 }}>
                 Already i have account? { highlight('Sign in')}
             </Text>
-
+                <FlashMessage ref={flashmsg} />
             </View>
+
         </SafeAreaView>
     )
 }

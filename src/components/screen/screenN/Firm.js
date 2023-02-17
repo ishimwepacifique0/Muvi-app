@@ -27,9 +27,9 @@ export default function Firm(){
       })
   }
   return(
-    <SafeAreaView>
+    <View>
     <View style={styles.container}>
-      <Text style={{color:'white',fontSize:20,marginVertical:12,marginHorizontal:10,fontWeight:'bold'}}>
+      <Text style={{color:'white',fontSize:20,marginVertical:30,marginHorizontal:10,fontWeight:'bold'}}>
           My list
         </Text>
         <ScrollView>
@@ -50,7 +50,7 @@ export default function Firm(){
        
     </View>
     <StatusBar  style="light" />
-    </SafeAreaView>
+  </View>
   )
 }
 

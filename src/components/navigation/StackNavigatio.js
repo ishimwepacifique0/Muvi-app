@@ -13,6 +13,8 @@ import React from "react";
 import { getItemAsync } from "expo-secure-store";
 import HomeScreen from "../screen/homeScreen";
 import EditProfile from "../screen/screenN/EditProfile";
+import { store,signIn as storedata } from "../../features/authSlice";
+
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -23,11 +25,15 @@ export default function RouterNavigation() {
     React.useEffect(() => {
         getItemAsync("userToken").then((data) => {
             console.log(data, "data from storage")
-            dispatch(userToken(data))
+            dispatch(store(data))
         }).catch((err) => {
             console.log(err)
         })
-    }, [])
+        getItemAsync("userdata").then((res)=>{
+            dispatch(storedata(res)).catch((err)=>{
+                console.log(err)
+            })
+        }) },[])
     return (
         <Navigator initialRouteName="appscreen" screenOptions={{ headerShown: false }}>
 
@@ -36,6 +42,8 @@ export default function RouterNavigation() {
                     <>
                         <Screen name="home" component={BottomNavigation} options={{ headerShown: false }} />
                         <Screen name="edit" component={ EditProfile } options={{ headerShown: false }} />
+                        <Screen name="detail" component={Detail} options={{ headerShown: false }} />
+                        <Screen name="watch" component={WatchTrailer} options={{ headerShown: false }} />
                     </>
                 ) : (
                     <>
@@ -44,8 +52,6 @@ export default function RouterNavigation() {
                         <Screen name="next" component={NextScreen} options={{ headerShown: false }} />
                         <Screen name="login" component={SigninScreen} options={{ headerShown: false }} />
                         <Screen name="signup" component={SignupScreen} options={{ headerShown: false }} />
-                        <Screen name="detail" component={Detail} options={{ headerShown: false }} />
-                        <Screen name="watch" component={WatchTrailer} options={{ headerShown: false }} />
                     </>
                 )
             }

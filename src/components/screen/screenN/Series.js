@@ -4,11 +4,12 @@ import React ,{useEffect,useState}from 'react'
 import { Feather } from '@expo/vector-icons'
 import { TextInput } from 'react-native-paper'
 import axios from 'axios'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
-const Series = () => {
+const Series = ({navigation}) => {
  const [search,setSearch] = useState([])
  const [searchdata,setSearchdata] = useState('')
 
@@ -35,7 +36,7 @@ const Series = () => {
 
   return (
       <View style={styles.container}>
-        <Text style={{color:'white',fontSize:20,marginVertical:6,marginHorizontal:10,fontWeight:'bold'}}>
+        <Text style={{color:'white',fontSize:20,marginVertical:20,marginHorizontal:10,fontWeight:'bold'}}>
           Search
         </Text>
         <View style={styles.seach}>
@@ -59,7 +60,8 @@ const Series = () => {
         <ScrollView>
         {search.map((item,key)=>{
           return(
-            <View style={{flexDirection:'row',marginVertical:6}} key={item.id}>
+            <TouchableOpacity key={item.id} onPress={()=>{navigation.navigate("detail",item)}}>
+              <View style={{flexDirection:'row',marginVertical:6}}>
             <Image 
             source={{
               uri:`https://image.tmdb.org/t/p/w500${item.poster_path}`
@@ -79,6 +81,7 @@ const Series = () => {
               <Text style={{ color:'white',fontSize:15}} numberOfLines={1}>{item.popularity}</Text>
             </View>
           </View>
+            </TouchableOpacity>
           );
         }) }
         </ScrollView>

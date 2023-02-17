@@ -17,18 +17,22 @@ const height = Dimensions.get('window'). height;
 
 export default function WelcomeScreen({navigation}){
   const [show,setShow] = React.useState(false)
+
+  //  React.useEffect(()=>{
+  //   gonne()
+  //  })
+    const gonne = ()=>{
+      setShow(true)
+      setTimeout(() => {
+        setShow(false)
+        navigation.navigate('app')
+      }, 2000);
+      }
     return(
     <SafeAreaView>
       <View style={styles.container}>
       
-        <Pressable onPress={
-          ()=>{
-            setShow(true)
-            setTimeout(() => {
-              setShow(false)
-              navigation.navigate('app')
-            }, 1000);
-            }} >
+        <Pressable onPress={gonne}>
                <View style={styles.content}>
                <View>
                 <Image source={require('./image/logo6.png')}
